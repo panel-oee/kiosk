@@ -1,22 +1,17 @@
-Terminal 6S v1.3.1 - pakiet pełny
+Terminal 6S v1.4.0
 
 Nowości:
-- automatyczny wybór najbliższej przerwy 6S,
-- ostrzeżenie i potwierdzenie zapisu dla innej daty,
-- lista wszystkich zadań bieżącej sesji,
-- status każdego zadania: do wykonania, wykonane, problem, zapis lokalny,
-- ręczny przycisk Synchronizuj teraz,
-- ostrzeżenie przed zamknięciem z wpisami offline,
-- automatyczne zamknięcie sesji po 10 minutach bezczynności,
-- tryb administratora po przytrzymaniu logo 6S przez 5 sekund,
-- zmiana operatora przez administratora bez czyszczenia cache,
-- historia nadal przypisana do operatora urządzenia,
-- numer wersji 1.3.0 i nowy cache PWA v8.
+- prawidłowe cofanie zapisów offline,
+- rozróżnienie wpisów oczekujących i błędów synchronizacji,
+- panel kolejki z ponawianiem pojedynczych wpisów,
+- trwały identyfikator urządzenia,
+- ekran diagnostyczny administratora,
+- kontrolowana aktualizacja bez przeładowania trwającej sesji,
+- filtry analityczne operatora, zmiany, statusu i zakresu,
+- ranking przyczyn problemów i zadań problemowych,
+- dwa wskaźniki: terminowość i obsłużenie obowiązków,
+- trend wyników w miesiącu.
 
-Domyślny PIN administratora: 6250.
-Przed publikacją zaleca się zmienić wartość ADMIN_PIN w index.html.
+Uwaga: pełny obieg problemów, zdjęcia i Supabase Auth wymagają zmian w schemacie bazy i zasadach RLS. Ta paczka nie zmienia bazy i pozostaje zgodna z obecną tabelą sixs_task_logs.
 
-Aktualizacja GitHub Pages:
-Wgraj wszystkie pliki, zachowaj folder icons i zastąp szczególnie index.html, sw.js, manifest.webmanifest oraz statystyki_6S.html.
-
-Poprawka v1.3.1: naprawiono wyswietlanie kodu JavaScript w statystyki_6S.html.
+Wgraj wszystkie pliki na GitHub Pages, zachowując folder icons.
