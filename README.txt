@@ -1,12 +1,15 @@
-Terminal 6S v1.5.1 / build 16
+Terminal 6S v1.6.0 / build 17
 
-Wersja testowa mechanizmu aktualizacji z v1.5.0 build 15 do v1.5.1 build 16.
+Nowości:
+- uproszczony pulpit przypisanego operatora,
+- licznik do najbliższej sesji 6S,
+- informacja o standardowym oknie startu: 15 min przed i 30 min po,
+- pomiar czasu bieżącej sesji,
+- podsumowanie końca sesji,
+- lokalna kopia operatorów, harmonogramu i ostatniej konfiguracji zadań,
+- awaryjne uruchomienie listy operatorów z pamięci offline,
+- podstawowe wykrywanie konfliktu nowszego statusu w bazie,
+- automatyczne testy GitHub Actions,
+- mechanizm aktualizacji build 16 -> build 17.
 
-Po publikacji wszystkich plików aplikacja w wersji 1.5.0 powinna pokazać:
-- Dostępna wersja 1.5.1
-- Obecna: 1.5.0 / build 15
-- Nowa: build 16
-
-Po kliknięciu Zaktualizuj teraz przycisk przejdzie przez etapy Pobieranie, Instalowanie i Uruchamianie. Po controllerchange aplikacja otworzy index.html z parametrem build=16. Po uruchomieniu v1.5.1 baner musi zniknąć, ponieważ APP_BUILD i version.json mają wartość 16.
-
-Wgraj jednocześnie wszystkie pliki, szczególnie index.html, sw.js i version.json.
+Wgraj wszystkie pliki wraz z folderem .github/workflows.

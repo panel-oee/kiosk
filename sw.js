@@ -1,6 +1,6 @@
-const APP_VERSION = '1.5.1';
-const APP_BUILD = 16;
-const VERSION = 'terminal-6s-1.5.1-v16';
+const APP_VERSION = '1.6.0';
+const APP_BUILD = 17;
+const VERSION = 'terminal-6s-1.6.0-v17';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
