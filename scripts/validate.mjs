@@ -1,0 +1,12 @@
+import fs from "node:fs";
+const required=["index.html","statystyki_6S.html","sw.js","version.json","manifest.webmanifest","icons/icon-192.png","icons/icon-512.png"];
+for(const file of required)if(!fs.existsSync(file))throw new Error(`Brak pliku: ${file}`);
+const index=fs.readFileSync("index.html","utf8"),sw=fs.readFileSync("sw.js","utf8"),version=JSON.parse(fs.readFileSync("version.json","utf8")),manifest=JSON.parse(fs.readFileSync("manifest.webmanifest","utf8"));
+const iv=index.match(/const APP_VERSION='([^']+)'/),ib=index.match(/const APP_BUILD=(\d+)/),sv=sw.match(/const APP_VERSION = '([^']+)'/),sb=sw.match(/const APP_BUILD = (\d+)/),cache=sw.match(/const VERSION = '([^']+)'/);
+if(!iv||!ib||!sv||!sb||!cache)throw new Error("Nie znaleziono informacji wersji/build/cache");
+if(iv[1]!==sv[1]||iv[1]!==version.version)throw new Error("Niezgodna wersja");
+if(Number(ib[1])!==Number(sb[1])||Number(ib[1])!==Number(version.build))throw new Error("Niezgodny build");
+if(cache[1]!==version.cache)throw new Error("Niezgodny cache");
+if(!manifest.name||!manifest.start_url)throw new Error("Nieprawidłowy manifest");
+if(index.includes("summaryHtml+clone.outerHTML+'\n<script>"))throw new Error("Wykryto uszkodzony skrypt eksportu");
+console.log(`OK: ${version.version}, build ${version.build}, ${version.cache}`);
