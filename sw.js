@@ -1,4 +1,4 @@
-const CACHE_NAME = 'terminal-6s-v2';
+const CACHE_NAME = 'terminal-6s-v3';
 const APP_FILES = [
   './',
   './index.html',

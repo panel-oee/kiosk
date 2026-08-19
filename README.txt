@@ -1,1 +1,1 @@
-Wersja PWA z przyciskiem Zainstaluj. Wrzuc wszystkie pliki na GitHub Pages. index.html jest plikiem glownym.
+Wersja PWA v2. Przycisk Zainstaluj jest zawsze widoczny. Wrzuc wszystkie pliki na GitHub Pages i zastap poprzednie wersje. Po wdrozeniu wykonaj twarde odswiezenie lub wyczysc dane witryny, poniewaz stary service worker moze trzymac poprzedni index.html.
