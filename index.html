@@ -42,17 +42,20 @@
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
 
   <style>
-    .sixs-web-nav{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:0 0 14px}
-    .sixs-web-nav a{display:block;text-align:center;text-decoration:none;border:1px solid #2b3e59;background:#0b1627;color:#f8fafc;border-radius:14px;padding:12px 10px;font-weight:950}
-    .sixs-web-nav a.active{background:#2563eb;border-color:#38bdf8;color:#fff}
-    @media(max-width:600px){.sixs-web-nav{grid-template-columns:1fr 1fr;margin:0 0 10px}.sixs-web-nav a{padding:11px 8px}}
+    .sixs-simple-nav{display:grid;grid-template-columns:1fr 1fr auto;gap:10px;margin:0 0 14px}
+    .sixs-simple-nav a,.sixs-simple-nav button{display:block;text-align:center;text-decoration:none;border:1px solid #2b3e59;background:#0b1627;color:#f8fafc;border-radius:14px;padding:12px 10px;font-weight:950;min-height:44px}
+    .sixs-simple-nav a.active{background:#2563eb;border-color:#38bdf8;color:#fff}
+    .sixs-simple-nav button{cursor:pointer;background:#047857;border-color:#10b981;display:none;white-space:nowrap}
+    .sixs-simple-nav button.show{display:block}
+    @media(max-width:600px){.sixs-simple-nav{grid-template-columns:1fr 1fr}.sixs-simple-nav button{grid-column:1 / -1}.sixs-simple-nav a,.sixs-simple-nav button{padding:11px 8px}}
   </style>
 </head>
 <body>
 <main class="app">
-  <nav class="sixs-web-nav" aria-label="Nawigacja aplikacji">
+  <nav class="sixs-simple-nav" aria-label="Nawigacja aplikacji">
     <a class="active" href="index.html">Terminal 6S</a>
     <a href="statystyki_6S.html">Statystyki</a>
+    <button id="installAppButton" type="button">⬇ Zainstaluj</button>
   </nav>
 
   <header class="topbar">
@@ -242,9 +245,36 @@ window.addEventListener('load',init);
 </script>
 
 <script>
+let sixsInstallPrompt = null;
+const sixsInstallButton = document.getElementById('installAppButton');
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
     navigator.serviceWorker.register('./sw.js').catch(function () {});
+  });
+}
+
+window.addEventListener('beforeinstallprompt', function (event) {
+  event.preventDefault();
+  sixsInstallPrompt = event;
+  if (sixsInstallButton) sixsInstallButton.classList.add('show');
+});
+
+window.addEventListener('appinstalled', function () {
+  sixsInstallPrompt = null;
+  if (sixsInstallButton) sixsInstallButton.classList.remove('show');
+});
+
+if (sixsInstallButton) {
+  sixsInstallButton.addEventListener('click', async function () {
+    if (sixsInstallPrompt) {
+      sixsInstallPrompt.prompt();
+      await sixsInstallPrompt.userChoice;
+      sixsInstallPrompt = null;
+      sixsInstallButton.classList.remove('show');
+    } else {
+      alert('Jeżeli przycisk instalacji nie jest dostępny, użyj menu przeglądarki: Chrome → trzy kropki → Dodaj do ekranu głównego / Zainstaluj aplikację.');
+    }
   });
 }
 </script>

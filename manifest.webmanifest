@@ -1,7 +1,7 @@
 {
   "name": "Terminal 6S",
   "short_name": "6S",
-  "description": "Terminal 6S i statystyki 6S dla lakierni.",
+  "description": "Terminal 6S i statystyki realizacji zadań 6S.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",

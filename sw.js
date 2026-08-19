@@ -1,9 +1,7 @@
-const CACHE_NAME = 'terminal-6s-v1';
+const CACHE_NAME = 'terminal-6s-v2';
 const APP_FILES = [
   './',
   './index.html',
-  './panel.html',
-  './kiosk_6S.html',
   './statystyki_6S.html',
   './manifest.webmanifest',
   './icons/icon-192.png',
@@ -23,9 +21,8 @@ self.addEventListener('activate', event => {
 });
 
 self.addEventListener('fetch', event => {
-  const request = event.request;
-  if (request.method !== 'GET') return;
+  if (event.request.method !== 'GET') return;
   event.respondWith(
-    fetch(request).catch(() => caches.match(request).then(response => response || caches.match('./index.html')))
+    fetch(event.request).catch(() => caches.match(event.request).then(response => response || caches.match('./index.html')))
   );
 });

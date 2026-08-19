@@ -12,10 +12,6 @@
   <meta name="mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-capable" content="yes">
   <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
-
-<style>
-  .pwa-install-note{display:none}
-</style>
 </head><body><div class="wrap">
 <div class="toolbar"><div class="title"><h1>📅 Kalendarz realizacji zadań 6S</h1><div>Pełny katalog obszarów i zadań z zakładki 2, również bez przypisań.</div></div><div class="controls"><div class="month-nav"><button type="button" onclick="changeMonth(-1)">◀</button><div class="field"><label>Miesiąc</label><input id="month" type="month"></div><button type="button" onclick="changeMonth(1)">▶</button></div><button type="button" onclick="currentMonth()">Bieżący miesiąc</button><button type="button" onclick="window.location.href='index.html'">✅ Terminal 6S</button><button onclick="loadCalendar()">Odśwież</button><button class="fullscreen" onclick="toggleFullscreen()">⛶ Pełny ekran</button><button class="excel" onclick="exportExcel()">📊 Eksport Excel</button><button class="print" onclick="window.print()">Drukuj / PDF</button></div></div><div class="area-nav"><div class="area-nav-head"><span>Obszary</span><strong id="selectedAreaLabel">Wszystkie obszary</strong></div><div id="areaButtons" class="area-buttons"><button type="button" class="area-btn active" data-area="all" onclick="selectArea('all',this)">Wszystkie obszary</button></div></div>
 <div class="task-nav"><strong>Widok zadań:</strong><button class="task-filter-btn active" data-filter="all" onclick="setTaskFilter('all',this)">Wszystkie</button><button class="task-filter-btn" data-filter="assigned" onclick="setTaskFilter('assigned',this)">Przypisane</button><button class="task-filter-btn" data-filter="unassigned" onclick="setTaskFilter('unassigned',this)">Nieprzypisane</button><button class="task-filter-btn" data-filter="archived" onclick="setTaskFilter('archived',this)">Archiwalne</button></div><div id="status" class="status">Ładowanie...</div>
