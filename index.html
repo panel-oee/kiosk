@@ -59,6 +59,14 @@
     .operator-lock-help{margin-top:5px;color:var(--muted);font-size:12px;line-height:1.4}
     .lock-operator-btn{width:100%;margin-top:10px;border:0;border-radius:12px;padding:13px;background:#0f766e;color:white;font-weight:950;cursor:pointer}
     #operatorSelect:disabled{opacity:1;color:#fff;background:#0f1f33;border-color:#10b981;font-weight:900}
+
+    .session-tools{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:10px 0}
+    .tool-btn{border:1px solid var(--border);background:#0b1627;color:#fff;border-radius:13px;padding:12px;font-weight:950;cursor:pointer}
+    .tool-btn.sync{background:#0f766e;border-color:#10b981}.tool-btn:disabled{opacity:.45}
+    .date-warning{display:none;margin-top:10px;padding:10px 12px;border-radius:12px;background:rgba(245,158,11,.12);border:1px solid rgba(245,158,11,.45);color:#fcd34d;font-size:13px;font-weight:850}.date-warning.show{display:block}
+    .task-list{display:grid;gap:9px}.task-list-item{display:grid;grid-template-columns:1fr auto;gap:10px;align-items:center;padding:12px;border:1px solid var(--border);background:#0b1627;border-radius:13px;cursor:pointer}.task-list-item small{display:block;color:var(--blue);font-weight:900;margin-bottom:3px}.task-state{border-radius:999px;padding:5px 8px;font-size:11px;font-weight:950;white-space:nowrap}.state-done{background:rgba(16,185,129,.2);color:#6ee7b7}.state-problem{background:rgba(239,68,68,.2);color:#fca5a5}.state-pending{background:rgba(245,158,11,.2);color:#fcd34d}.state-open{background:#17253a;color:#cbd5e1}
+    .admin-modal{position:fixed;inset:0;z-index:60;display:none;align-items:center;justify-content:center;padding:16px;background:rgba(2,8,23,.82)}.admin-modal.open{display:flex}.admin-card{width:min(520px,100%);background:var(--panel);border:1px solid var(--border);border-radius:20px;padding:20px}.admin-card h2{margin:0 0 8px}.admin-card p{color:var(--muted)}.admin-actions{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin-top:12px}.admin-card input{width:100%;background:#081321;color:#fff;border:1px solid var(--border);border-radius:12px;padding:13px}.admin-note{font-size:11px;color:var(--muted);margin-top:9px}.queued-task-note{margin:8px auto 0;max-width:420px;color:#fcd34d;font-weight:900;font-size:12px}
+    @media(max-width:600px){.session-tools,.admin-actions{grid-template-columns:1fr}}
   </style>
 </head>
 <body>
@@ -70,7 +78,7 @@
   </nav>
 
   <header class="topbar">
-    <div class="brand"><div class="logo">6S</div><div><strong>Terminal 6S</strong><div class="sub">Szybkie potwierdzanie czynności • v1.2.0</div></div></div>
+    <div class="brand"><div class="logo" id="adminLogo" title="Przytrzymaj 5 sekund, aby otworzyć tryb administratora">6S</div><div><strong>Terminal 6S</strong><div class="sub">Szybkie potwierdzanie czynności • v1.3.0</div></div></div>
     <div id="connection" class="connection"><span class="dot"></span><span id="connectionText">Online</span><span id="syncBadge" class="sync-badge">✓ Synchronizacja</span></div>
   </header>
 
@@ -82,7 +90,7 @@
       <div id="operatorLockHelp" class="operator-lock-help">Po przypisaniu zmiana operatora będzie możliwa dopiero po wyczyszczeniu danych aplikacji.</div>
       <button id="lockOperatorButton" class="lock-operator-btn" type="button">🔒 Przypisz operatora do urządzenia</button>
     </div>
-    <details class="details"><summary>Ustawienia ręczne</summary><div class="advanced"><input id="sessionDate" type="date" aria-label="Data"><select id="sessionSelect" aria-label="Przerwa 6S"></select></div></details><button id="refreshBreaksButton" class="secondary" type="button">↻ Odśwież listę przerw 6S</button>
+    <div id="dateWarning" class="date-warning"></div><details class="details"><summary>Ustawienia ręczne</summary><div class="advanced"><input id="sessionDate" type="date" aria-label="Data"><select id="sessionSelect" aria-label="Przerwa 6S"></select></div></details><button id="refreshBreaksButton" class="secondary" type="button">↻ Odśwież listę przerw 6S</button>
     <div class="nav-row"><button id="startButton" class="primary" disabled>Rozpocznij 6S</button><button id="historyButton" class="secondary">Historia miesięczna</button></div>
     <div id="startStatus" class="sub" style="margin-top:12px"></div>
   </section>
@@ -97,6 +105,7 @@
       <div class="progress-track"><div id="progressBar" class="progress-bar"></div></div>
       <div class="counts"><span>Wykonane: <b id="doneCount">0</b></span><span>Problemy: <b id="problemCount">0</b></span></div>
     </div>
+    <div class="session-tools"><button id="taskListButton" class="tool-btn">☰ Lista zadań</button><button id="syncNowButton" class="tool-btn sync">↻ Synchronizuj teraz</button></div>
     <div id="taskArea" class="card task-card"></div>
   </section>
 
@@ -115,6 +124,8 @@
 </main>
 
 <div id="toast" class="toast"><span id="toastText"></span><button id="undoButton">Cofnij</button></div>
+<div id="taskListModal" class="modal-backdrop" role="dialog" aria-modal="true"><div class="modal"><h2>Lista zadań sesji</h2><p>Wybierz zadanie, aby przejść do jego karty.</p><div id="taskListContent" class="task-list"></div><button id="closeTaskList" class="secondary">Zamknij</button></div></div>
+<div id="adminModal" class="admin-modal"><div class="admin-card"><h2>Tryb administratora</h2><p>Podaj PIN brygadzisty, aby odblokować zmianę operatora.</p><input id="adminPin" type="password" inputmode="numeric" maxlength="8" placeholder="PIN"><div class="admin-actions"><button id="cancelAdmin" class="secondary">Anuluj</button><button id="confirmAdmin" class="primary">Odblokuj urządzenie</button></div><div class="admin-note">Domyślny PIN w tej wersji: 6250. Zmień stałą ADMIN_PIN w index.html przed publikacją.</div></div></div>
 <div id="problemModal" class="modal-backdrop" role="dialog" aria-modal="true" aria-labelledby="problemTitle">
   <div class="modal"><h2 id="problemTitle">Zgłoś problem</h2><p>Wybierz przyczynę. Możesz także dodać krótki opis.</p>
     <div id="reasonList" class="reasons"></div>
@@ -129,7 +140,7 @@ const SUPABASE_ANON_KEY='sb_publishable_n6qmH_g5BMxbzxxz5KDp3A_W0k80d7L';
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const BREAK_KEY='gema_break_schedule_config_v2';
 const OFFLINE_QUEUE_KEY='terminal_6s_offline_queue_v1';
-const APP_VERSION='1.2.0';
+const APP_VERSION='1.3.0';
 const DEVICE_OPERATOR_KEY='sixs_device_operator_lock_v1';
 const DEFAULT_BREAKS=[{start:'05:45',durationMinutes:15,kind:'6S',shift:'1',days:[1,2,3,4,5],enabled:true},{start:'13:45',durationMinutes:15,kind:'6S',shift:'2',days:[1,2,3,4,5],enabled:true},{start:'21:45',durationMinutes:15,kind:'6S',shift:'3',days:[1,2,3,4,5],enabled:true}];
 const REASONS=['Brak materiału','Awaria','Brak narzędzia','Brak czasu','Zagrożenie bezpieczeństwa','Inne'];
@@ -272,6 +283,49 @@ async function init(){updateConnection();window.addEventListener('online',()=>{u
 window.addEventListener('load',init);
 </script>
 
+
+<script>
+const ADMIN_PIN='6250';
+const INACTIVITY_MS=10*60*1000;
+let inactivityTimer=null,adminHoldTimer=null;
+
+function queueHasTask(taskId){return getOfflineQueue().some(item=>String(item.row?.task_id)===String(taskId))}
+function updateDateWarning(){const box=$('dateWarning'),value=$('sessionDate').value,today=dateKey(new Date());if(!box)return;if(value&&value!==today){box.textContent='⚠ Uwaga: pracujesz na dacie '+value+', a dzisiaj jest '+today+'. Zapis daty historycznej wymaga dodatkowego potwierdzenia.';box.classList.add('show')}else box.classList.remove('show')}
+function sessionPending(){return pendingTasks()}
+function taskState(t){const l=logs[t.id],queued=queueHasTask(t.id);if(queued)return['⏳ Lokalnie','state-pending'];if(l?.status==='done')return['✓ Wykonane','state-done'];if(l?.status==='problem')return['! Problem','state-problem'];return['○ Do wykonania','state-open']}
+function openTaskList(){const pending=sessionPending();$('taskListContent').innerHTML=tasks.map(t=>{const state=taskState(t);return `<button class="task-list-item" data-id="${t.id}"><span><small>${esc(t.area||'Pozostałe')}</small>${esc(t.task_name)}</span><span class="task-state ${state[1]}">${state[0]}</span></button>`}).join('')||'<div class="empty">Brak zadań.</div>';$('taskListModal').classList.add('open')}
+function closeTaskList(){$('taskListModal').classList.remove('open')}
+function goToTask(id){const pending=sessionPending(),idx=pending.findIndex(t=>String(t.id)===String(id));if(idx>=0){currentIndex=idx;closeTaskList();render()}else showToast('To zadanie jest już zakończone.',false,false)}
+async function manualSync(){const b=$('syncNowButton');b.disabled=true;b.textContent='Synchronizowanie...';try{await syncOfflineQueue();updateConnection()}finally{b.disabled=false;b.textContent='↻ Synchronizuj teraz'}}
+function guardedBackToStart(){const count=getOfflineQueue().length;if(count&&!window.confirm(count+' wpisów oczekuje na synchronizację. Dane pozostaną na urządzeniu i zostaną wysłane po odzyskaniu internetu. Zakończyć sesję?'))return;backToStart()}
+function resetInactivity(){clearTimeout(inactivityTimer);inactivityTimer=setTimeout(()=>{if(!$('workView').classList.contains('hidden')){showToast('Sesja zamknięta po 10 minutach bezczynności.',false,false);backToStart()}},INACTIVITY_MS)}
+function openAdmin(){$('adminPin').value='';$('adminModal').classList.add('open');$('adminPin').focus()}
+function closeAdmin(){$('adminModal').classList.remove('open')}
+function adminUnlock(){if($('adminPin').value!==ADMIN_PIN){showToast('Nieprawidłowy PIN administratora.',false,true);return}if(getOfflineQueue().length){showToast('Najpierw zsynchronizuj wpisy offline.',false,true);return}localStorage.removeItem(DEVICE_OPERATOR_KEY);localStorage.removeItem('sixs_last_operator');closeAdmin();applyOperatorLock();showToast('Odblokowano wybór operatora.',false,false)}
+
+const originalSetStatus=setStatus;
+setStatus=async function(id,status,comment=''){if($('sessionDate').value!==dateKey(new Date())&&!window.confirm('Zapisujesz wpis dla daty '+$('sessionDate').value+'. Kontynuować?'))return;await originalSetStatus(id,status,comment);updateConnection()};
+window.setStatus=setStatus;
+const originalRender=render;
+render=function(){originalRender();const active=tasks.find(t=>String(t.id)===String(sessionPending()[currentIndex]?.id));if(active&&queueHasTask(active.id)){const area=$('taskArea');area.insertAdjacentHTML('afterbegin','<div class="queued-task-note">⏳ To zadanie jest zapisane lokalnie i oczekuje na synchronizację.</div>')}const sync=$('syncNowButton');if(sync){sync.disabled=!navigator.onLine||getOfflineQueue().length===0;sync.style.visibility=getOfflineQueue().length?'visible':'hidden'}};
+
+window.addEventListener('load',()=>{
+  updateDateWarning();
+  $('sessionDate').addEventListener('change',updateDateWarning);
+  $('taskListButton').addEventListener('click',openTaskList);
+  $('closeTaskList').addEventListener('click',closeTaskList);
+  $('taskListContent').addEventListener('click',e=>{const b=e.target.closest('[data-id]');if(b)goToTask(b.dataset.id)});
+  $('syncNowButton').addEventListener('click',manualSync);
+  $('taskListModal').addEventListener('click',e=>{if(e.target===$('taskListModal'))closeTaskList()});
+  $('cancelAdmin').addEventListener('click',closeAdmin);$('confirmAdmin').addEventListener('click',adminUnlock);$('adminModal').addEventListener('click',e=>{if(e.target===$('adminModal'))closeAdmin()});
+  const logo=$('adminLogo');['pointerdown','touchstart'].forEach(n=>logo.addEventListener(n,()=>{clearTimeout(adminHoldTimer);adminHoldTimer=setTimeout(openAdmin,5000)}));['pointerup','pointerleave','touchend','touchcancel'].forEach(n=>logo.addEventListener(n,()=>clearTimeout(adminHoldTimer)));
+  ['click','touchstart','keydown','pointerdown'].forEach(n=>document.addEventListener(n,resetInactivity,{passive:true}));resetInactivity();
+  document.addEventListener('visibilitychange',()=>{if(document.visibilityState==='visible'){syncOfflineQueue();updateDateWarning();resetInactivity()}});
+  window.addEventListener('beforeunload',e=>{if(getOfflineQueue().length){e.preventDefault();e.returnValue=''}});
+  document.querySelector('#taskArea')?.addEventListener('click',e=>{if(e.target.closest('[onclick="backToStart()"]')){e.preventDefault();guardedBackToStart()}});
+  render();
+});
+</script>
 <script>
 let sixsInstallPrompt = null;
 const sixsInstallButton = document.getElementById('installAppButton');
