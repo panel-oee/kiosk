@@ -1,4 +1,6 @@
-const VERSION = 'terminal-6s-1.4.3-v13';
+const APP_VERSION = '1.5.0';
+const APP_BUILD = 15;
+const VERSION = 'terminal-6s-1.5.0-v15';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
@@ -12,13 +14,16 @@ const APP_FILES = [
   './icons/icon-512.png'
 ];
 
-self.addEventListener('message', event => { if (event.data && event.data.type === 'SKIP_WAITING') self.skipWaiting(); });
+self.addEventListener('message', event => {
+  if (!event.data) return;
+  if (event.data.type === 'SKIP_WAITING') self.skipWaiting();
+  if (event.data.type === 'GET_VERSION' && event.source) event.source.postMessage({type:'VERSION_INFO',version:APP_VERSION,build:APP_BUILD,cache:VERSION});
+});
 
 self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(APP_CACHE).then(cache => cache.addAll(APP_FILES))
   );
-  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {
