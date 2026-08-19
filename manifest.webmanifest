@@ -1,7 +1,7 @@
 {
   "name": "Terminal 6S",
   "short_name": "6S",
-  "description": "Terminal 6S v1.1.0 z kolejką zapisów offline i automatyczną synchronizacją.",
+  "description": "Terminal 6S v1.2.0 z blokadą operatora urządzenia, kolejką offline i automatyczną synchronizacją.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
