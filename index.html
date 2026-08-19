@@ -248,9 +248,31 @@ window.addEventListener('load',init);
 let sixsInstallPrompt = null;
 const sixsInstallButton = document.getElementById('installAppButton');
 
+function sixsIsInstalledApp() {
+  return window.matchMedia('(display-mode: standalone)').matches ||
+    window.matchMedia('(display-mode: fullscreen)').matches ||
+    window.navigator.standalone === true ||
+    document.referrer.startsWith('android-app://');
+}
+
+function updateSixsInstallButton() {
+  if (!sixsInstallButton) return;
+  if (sixsIsInstalledApp()) {
+    sixsInstallButton.style.display = 'none';
+    sixsInstallButton.setAttribute('aria-hidden', 'true');
+  } else {
+    sixsInstallButton.style.display = 'block';
+    sixsInstallButton.removeAttribute('aria-hidden');
+  }
+}
+
+updateSixsInstallButton();
+window.addEventListener('pageshow', updateSixsInstallButton);
+window.matchMedia('(display-mode: standalone)').addEventListener?.('change', updateSixsInstallButton);
+
 if ('serviceWorker' in navigator) {
   window.addEventListener('load', function () {
-    navigator.serviceWorker.register('./sw.js').catch(function () {});
+    navigator.serviceWorker.register('./sw.js').then(function(reg){ reg.update(); }).catch(function () {});
   });
 }
 
@@ -262,7 +284,7 @@ window.addEventListener('beforeinstallprompt', function (event) {
 
 window.addEventListener('appinstalled', function () {
   sixsInstallPrompt = null;
-  if (sixsInstallButton) { sixsInstallButton.textContent = '✓ Zainstalowano'; sixsInstallButton.disabled = true; }
+  updateSixsInstallButton();
 });
 
 if (sixsInstallButton) {
@@ -276,7 +298,7 @@ if (sixsInstallButton) {
       }
     } else {
       const isIos = /iphone|ipad|ipod/i.test(navigator.userAgent);
-      const isStandalone = window.matchMedia('(display-mode: standalone)').matches || window.navigator.standalone === true;
+      const isStandalone = sixsIsInstalledApp();
       if (isStandalone) {
         alert('Aplikacja Terminal 6S jest już uruchomiona jako zainstalowana.');
       } else if (isIos) {

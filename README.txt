@@ -1,1 +1,1 @@
-Wersja PWA v2. Przycisk Zainstaluj jest zawsze widoczny. Wrzuc wszystkie pliki na GitHub Pages i zastap poprzednie wersje. Po wdrozeniu wykonaj twarde odswiezenie lub wyczysc dane witryny, poniewaz stary service worker moze trzymac poprzedni index.html.
+Terminal 6S PWA offline v2. Przycisk Zainstaluj jest ukryty po uruchomieniu zainstalowanej aplikacji. Zastap wszystkie pliki na GitHub Pages, lacznie z sw.js.
