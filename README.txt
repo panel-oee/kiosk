@@ -1,4 +1,4 @@
-Terminal 6S v1.3.0 - pakiet pełny
+Terminal 6S v1.3.1 - pakiet pełny
 
 Nowości:
 - automatyczny wybór najbliższej przerwy 6S,
@@ -18,3 +18,5 @@ Przed publikacją zaleca się zmienić wartość ADMIN_PIN w index.html.
 
 Aktualizacja GitHub Pages:
 Wgraj wszystkie pliki, zachowaj folder icons i zastąp szczególnie index.html, sw.js, manifest.webmanifest oraz statystyki_6S.html.
+
+Poprawka v1.3.1: naprawiono wyswietlanie kodu JavaScript w statystyki_6S.html.
