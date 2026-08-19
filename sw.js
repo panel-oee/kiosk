@@ -1,4 +1,4 @@
-const VERSION = 'terminal-6s-1.4.0-v10';
+const VERSION = 'terminal-6s-1.4.1-v11';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
@@ -7,6 +7,7 @@ const APP_FILES = [
   './index.html',
   './statystyki_6S.html',
   './manifest.webmanifest',
+  './version.json',
   './icons/icon-192.png',
   './icons/icon-512.png'
 ];
