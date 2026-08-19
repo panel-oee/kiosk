@@ -1,17 +1,12 @@
-Terminal 6S v1.5.0 / build 15
+Terminal 6S v1.5.1 / build 16
 
-Naprawiony mechanizm aktualizacji:
-- porównuje liczbowy numer build, a nie sam tekst wersji,
-- version.json zawsze pobierany jest bez cache,
-- baner jest widoczny tylko, gdy opublikowany build jest wyższy od APP_BUILD,
-- przycisk pobiera i instaluje oczekujący Service Worker,
-- przeładowanie następuje dopiero po controllerchange,
-- aktualizacja jest blokowana podczas sesji, otwartego zgłoszenia lub przy wpisach offline,
-- gdy wersja jest aktualna, baner pozostaje ukryty.
+Wersja testowa mechanizmu aktualizacji z v1.5.0 build 15 do v1.5.1 build 16.
 
-Aby opublikować kolejną wersję, zwiększ jednocześnie:
-1. APP_VERSION i APP_BUILD w index.html,
-2. APP_VERSION, APP_BUILD i VERSION w sw.js,
-3. version, build i cache w version.json.
+Po publikacji wszystkich plików aplikacja w wersji 1.5.0 powinna pokazać:
+- Dostępna wersja 1.5.1
+- Obecna: 1.5.0 / build 15
+- Nowa: build 16
 
-Wgraj wszystkie pliki na GitHub Pages, zachowując folder icons.
+Po kliknięciu Zaktualizuj teraz przycisk przejdzie przez etapy Pobieranie, Instalowanie i Uruchamianie. Po controllerchange aplikacja otworzy index.html z parametrem build=16. Po uruchomieniu v1.5.1 baner musi zniknąć, ponieważ APP_BUILD i version.json mają wartość 16.
+
+Wgraj jednocześnie wszystkie pliki, szczególnie index.html, sw.js i version.json.

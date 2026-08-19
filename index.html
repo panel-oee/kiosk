@@ -87,7 +87,7 @@
   </div>
 
   <header class="topbar">
-    <div class="brand"><div class="logo" id="adminLogo" title="Przytrzymaj 5 sekund, aby otworzyć tryb administratora">6S</div><div><strong>Terminal 6S</strong><div class="sub">Szybkie potwierdzanie czynności • v1.5.0</div></div></div>
+    <div class="brand"><div class="logo" id="adminLogo" title="Przytrzymaj 5 sekund, aby otworzyć tryb administratora">6S</div><div><strong>Terminal 6S</strong><div class="sub">Szybkie potwierdzanie czynności • v1.5.1</div></div></div>
     <div id="connection" class="connection"><span class="dot"></span><span id="connectionText">Online</span><span id="syncBadge" class="sync-badge status-clickable" title="Pokaż kolejkę synchronizacji">✓ Synchronizacja</span></div>
   </header>
 
@@ -151,8 +151,8 @@ const SUPABASE_ANON_KEY='sb_publishable_n6qmH_g5BMxbzxxz5KDp3A_W0k80d7L';
 const db=supabase.createClient(SUPABASE_URL,SUPABASE_ANON_KEY);
 const BREAK_KEY='gema_break_schedule_config_v2';
 const OFFLINE_QUEUE_KEY='terminal_6s_offline_queue_v1';
-const APP_VERSION='1.5.0';
-const APP_BUILD=15;
+const APP_VERSION='1.5.1';
+const APP_BUILD=16;
 const DEVICE_OPERATOR_KEY='sixs_device_operator_lock_v1';
 const DEFAULT_BREAKS=[{start:'05:45',durationMinutes:15,kind:'6S',shift:'1',days:[1,2,3,4,5],enabled:true},{start:'13:45',durationMinutes:15,kind:'6S',shift:'2',days:[1,2,3,4,5],enabled:true},{start:'21:45',durationMinutes:15,kind:'6S',shift:'3',days:[1,2,3,4,5],enabled:true}];
 const REASONS=['Brak materiału','Awaria','Brak narzędzia','Brak czasu','Zagrożenie bezpieczeństwa','Inne'];
@@ -357,7 +357,7 @@ updateConnection=function(){baseUpdateConnection();const st=queueState(),badge=$
 const baseUndo=undo;
 undo=async function(){if(!lastAction)return;const {id,previous}=lastAction,q=getOfflineQueue(),idx=q.findIndex(x=>String(x.row?.task_id)===String(id)&&String(x.row?.operator_id)===String($('operatorSelect').value)&&x.row?.log_date===$('sessionDate').value);if(idx>=0){q.splice(idx,1);saveOfflineQueue(q);if(previous)logs[id]=previous;else delete logs[id];lastAction=null;render();showToast('Cofnięto lokalny zapis offline.',false,false);return}await baseUndo()};
 $('undoButton').onclick=undo;
-function diagnosticData(){return{wersja:APP_VERSION,urzadzenie:getDeviceId(),online:navigator.onLine?'tak':'nie',operator:operators.find(o=>String(o.id)===String(getLockedOperatorId()))?.operator_name||'brak',kolejka:getOfflineQueue().length,ostatnia_synchronizacja:localStorage.getItem(LAST_SYNC_KEY)||'brak',service_worker:navigator.serviceWorker?.controller?'aktywny':'brak kontrolera',cache:'terminal-6s-1.4.0-v10',harmonogram:localStorage.getItem(BREAK_KEY)?'zapisany lokalnie':'brak lokalnego',user_agent:navigator.userAgent}}
+function diagnosticData(){return{wersja:APP_VERSION,urzadzenie:getDeviceId(),online:navigator.onLine?'tak':'nie',operator:operators.find(o=>String(o.id)===String(getLockedOperatorId()))?.operator_name||'brak',kolejka:getOfflineQueue().length,ostatnia_synchronizacja:localStorage.getItem(LAST_SYNC_KEY)||'brak',service_worker:navigator.serviceWorker?.controller?'aktywny':'brak kontrolera',cache:'terminal-6s-1.5.1-v16',harmonogram:localStorage.getItem(BREAK_KEY)?'zapisany lokalnie':'brak lokalnego',user_agent:navigator.userAgent}}
 function renderDiagnostics(){const d=diagnosticData();$('diagnosticsContent').innerHTML=Object.entries(d).map(([k,v])=>`<div class="diag-row"><b>${esc(k.replaceAll('_',' '))}</b><span>${esc(v)}</span></div>`).join('')}
 function openDiagnosticsModal(){renderDiagnostics();$('diagnosticsModal').classList.add('open')}
 async function testDb(){try{const {error}=await db.from('sixs_operators').select('id').limit(1);if(error)throw error;showToast('Połączenie z bazą działa.',false,false)}catch(e){showToast('Błąd bazy: '+e.message,false,true)}renderDiagnostics()}
