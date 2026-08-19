@@ -1,4 +1,4 @@
-const VERSION = 'terminal-6s-1.4.2-v12';
+const VERSION = 'terminal-6s-1.4.3-v13';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
@@ -18,6 +18,7 @@ self.addEventListener('install', event => {
   event.waitUntil(
     caches.open(APP_CACHE).then(cache => cache.addAll(APP_FILES))
   );
+  self.skipWaiting();
 });
 
 self.addEventListener('activate', event => {

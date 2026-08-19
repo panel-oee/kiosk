@@ -1,4 +1,4 @@
-Terminal 6S v1.4.2
+Terminal 6S v1.4.3
 
 Nowości:
 - prawidłowe cofanie zapisów offline,
@@ -19,3 +19,5 @@ Wgraj wszystkie pliki na GitHub Pages, zachowując folder icons.
 Poprawka 1.4.1: komunikat aktualizacji jest pokazywany tylko wtedy, gdy version.json zawiera nowszą wersję. Przycisk pokazuje stan aktualizacji i usuwa fałszywy komunikat, gdy aplikacja jest aktualna.
 
 Poprawka 1.4.2: aktualizacja jest pokazywana wyłącznie, gdy opublikowany numer jest większy od uruchomionego. version.json omija cache Service Workera.
+
+Poprawka 1.4.3: całkowicie usunięto baner i przycisk ręcznej aktualizacji. Nowe pliki aktywują się automatycznie po publikacji i ponownym uruchomieniu aplikacji.

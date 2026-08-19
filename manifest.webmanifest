@@ -1,7 +1,7 @@
 {
   "name": "Terminal 6S",
   "short_name": "6S",
-  "description": "Terminal 6S v1.4.2 z listą zadań, trybem administratora, kolejką offline, automatyczną synchronizacją i kontrolą sesji.",
+  "description": "Terminal 6S v1.4.3 z listą zadań, trybem administratora, kolejką offline, automatyczną synchronizacją i kontrolą sesji.",
   "start_url": "./index.html",
   "scope": "./",
   "display": "standalone",
