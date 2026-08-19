@@ -1,4 +1,4 @@
-Terminal 6S v1.4.1
+Terminal 6S v1.4.2
 
 Nowości:
 - prawidłowe cofanie zapisów offline,
@@ -17,3 +17,5 @@ Uwaga: pełny obieg problemów, zdjęcia i Supabase Auth wymagają zmian w schem
 Wgraj wszystkie pliki na GitHub Pages, zachowując folder icons.
 
 Poprawka 1.4.1: komunikat aktualizacji jest pokazywany tylko wtedy, gdy version.json zawiera nowszą wersję. Przycisk pokazuje stan aktualizacji i usuwa fałszywy komunikat, gdy aplikacja jest aktualna.
+
+Poprawka 1.4.2: aktualizacja jest pokazywana wyłącznie, gdy opublikowany numer jest większy od uruchomionego. version.json omija cache Service Workera.

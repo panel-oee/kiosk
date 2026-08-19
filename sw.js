@@ -1,4 +1,4 @@
-const VERSION = 'terminal-6s-1.4.1-v11';
+const VERSION = 'terminal-6s-1.4.2-v12';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
@@ -78,6 +78,12 @@ async function networkWithDataFallback(request) {
 self.addEventListener('fetch', event => {
   const request = event.request;
   if (request.method !== 'GET') return;
+
+  const requestUrl = new URL(request.url);
+  if (requestUrl.origin === self.location.origin && requestUrl.pathname.endsWith('/version.json')) {
+    event.respondWith(fetch(request, { cache: 'no-store' }));
+    return;
+  }
 
   if (isAppFile(request)) {
     event.respondWith(appShell(request));
