@@ -1,4 +1,4 @@
-const VERSION = 'terminal-6s-offline-v5';
+const VERSION = 'terminal-6s-1.1.0-v6';
 const APP_CACHE = VERSION + '-app';
 const DATA_CACHE = VERSION + '-data';
 
