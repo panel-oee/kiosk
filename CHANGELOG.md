@@ -6,6 +6,62 @@ Format dokumentu jest oparty na konwencji Keep a Changelog. Numery wersji odzwie
 
 ---
 
+## [1.6.0] - build 17
+
+### Dodano
+
+#### Pulpit operatora
+
+- Uproszczony pulpit przypisanego operatora.
+- Automatyczne wyświetlanie przypisanego operatora.
+- Informację o najbliższej sesji 6S, zmianie i godzinie rozpoczęcia.
+- Aktualizowany co sekundę licznik czasu do rozpoczęcia sesji.
+- Informację o czasie, który upłynął od planowanego rozpoczęcia.
+- Informację o standardowym oknie startu: 15 minut przed oraz 30 minut po planowanej godzinie.
+
+#### Pomiar i podsumowanie sesji
+
+- Automatyczny pomiar czasu po rozpoczęciu sesji.
+- Widoczny licznik czasu bieżącej sesji.
+- Zachowanie czasu rozpoczęcia w pamięci lokalnej.
+- Przywracanie czasu po ponownym otwarciu aplikacji.
+- Ekran podsumowania zawierający liczbę wykonanych zadań, problemów, wpisów offline oraz czas realizacji.
+
+#### Praca offline
+
+- Lokalną kopię listy operatorów.
+- Lokalną kopię harmonogramu przerw.
+- Lokalną kopię ostatniej konfiguracji zadań i sesji.
+- Awaryjne wczytanie operatorów z pamięci lokalnej, gdy Supabase jest niedostępny.
+- Wskaźnik gotowości podstawowej konfiguracji offline.
+
+#### Ochrona danych
+
+- Podstawowe wykrywanie nowszego, odmiennego statusu w Supabase.
+- Ostrzeżenie przed nadpisaniem nowszego wpisu.
+- Możliwość anulowania zapisu w przypadku konfliktu.
+
+#### Automatyczna walidacja repozytorium
+
+- Workflow `.github/workflows/validate.yml`.
+- Skrypt `scripts/validate.mjs` sprawdzający wymagane pliki, wersję, build, cache, manifest, ikony oraz ryzyko uszkodzenia eksportu statystyk.
+
+### Zmieniono
+
+- Zwiększono wersję z `1.5.1` do `1.6.0`.
+- Zwiększono build z `16` do `17`.
+- Zmieniono cache na `terminal-6s-1.6.0-v17`.
+- Zachowano kontrolowany mechanizm aktualizacji oparty na numerze buildu.
+
+### Zweryfikowano
+
+- Zgodność wersji, buildu i cache w `index.html`, `sw.js` oraz `version.json`.
+- Składnię JavaScript w plikach aplikacji.
+- Poprawność manifestu, ikon oraz archiwum ZIP.
+- Pomyślne wykonanie lokalnego skryptu walidacyjnego.
+
+---
+
 ## [1.5.1] - build 16
 
 ### Zmieniono
